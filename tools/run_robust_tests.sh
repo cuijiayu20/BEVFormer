@@ -26,8 +26,8 @@ NOISE_PKL="data/nuscenes/nuscenes_infos_val_with_noise.pkl"      # 外参扰动 
 DROP_PKL="data/nuscenes/nuscenes_infos_val_with_noise_Drop .pkl"  # 丢帧数据（注意文件名有空格）
 MASK_DIR="robust_benchmark/Occlusion_mask"
 
-# 基线使用的 ann_file（如果没有原始 temporal_val.pkl，则用 noise pkl 替代）
-BASELINE_ANN_FILE="${NOISE_PKL}"
+# 基线使用的 ann_file（服务器上实际的 val pkl 文件名）
+BASELINE_ANN_FILE="data/nuscenes/nuscenes2d_temporal_infos_val.pkl"
 
 mkdir -p ${OUTPUT_DIR}
 
@@ -111,6 +111,7 @@ echo "===== [Phase 1] Frame Drop Tests ====="
 for RATIO in 10 20 30 40 50 60 70 80 90; do
     run_single_test "drop_frames" "ratio${RATIO}" \
         "data.test.type=NuScenesNoiseDatasetV2" \
+        "data.test.ann_file=${BASELINE_ANN_FILE}" \
         "data.test.noise_nuscenes_ann_file=${DROP_PKL}" \
         "data.test.drop_frames=True" \
         "data.test.drop_ratio=${RATIO}" \
@@ -128,6 +129,7 @@ echo "===== [Phase 2] Extrinsics Perturbation Tests ====="
 for LEVEL in L1 L2 L3 L4; do
     run_single_test "extrinsics_single" "${LEVEL}" \
         "data.test.type=NuScenesNoiseDatasetV2" \
+        "data.test.ann_file=${BASELINE_ANN_FILE}" \
         "data.test.noise_nuscenes_ann_file=${NOISE_PKL}" \
         "data.test.extrinsics_noise=True" \
         "data.test.extrinsics_noise_level=${LEVEL}" \
@@ -138,6 +140,7 @@ done
 for LEVEL in L1 L2 L3 L4; do
     run_single_test "extrinsics_all" "${LEVEL}" \
         "data.test.type=NuScenesNoiseDatasetV2" \
+        "data.test.ann_file=${BASELINE_ANN_FILE}" \
         "data.test.noise_nuscenes_ann_file=${NOISE_PKL}" \
         "data.test.extrinsics_noise=True" \
         "data.test.extrinsics_noise_level=${LEVEL}" \
@@ -160,6 +163,7 @@ for LEVEL in S1 S2 S3 S4; do
     
     # 遮挡测试需要替换 Pipeline 中的 LoadMultiViewImageFromFiles
     run_single_test "occlusion" "${LEVEL}_exp${EXP}" \
+        "data.test.ann_file=${BASELINE_ANN_FILE}" \
         "data.test.pipeline.0.type=LoadMaskMultiViewImageFromFiles" \
         "data.test.pipeline.0.noise_nuscenes_ann_file=${NOISE_PKL}" \
         "data.test.pipeline.0.mask_file=${MASK_DIR}" \
