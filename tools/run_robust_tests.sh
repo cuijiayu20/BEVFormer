@@ -23,7 +23,7 @@ PORT=${PORT:-29503}
 
 # noise pkl 路径
 NOISE_PKL="data/nuscenes/nuscenes_infos_val_with_noise.pkl"      # 外参扰动 + 遮挡 mask
-DROP_PKL="data/nuscenes/nuscenes_infos_val_with_noise_Drop .pkl"  # 丢帧数据（注意文件名有空格）
+DROP_PKL="data/nuscenes/nuscenes_infos_val_with_noise_Drop.pkl"  # 丢帧数据（已去掉文件名空格）
 MASK_DIR="robust_benchmark/Occlusion_mask"
 
 # 基线使用的 ann_file（服务器上实际的 val pkl 文件名）
