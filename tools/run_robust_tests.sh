@@ -22,8 +22,8 @@ OUTPUT_DIR=${4:-"robust_results"}
 PORT=${PORT:-29503}
 
 # noise pkl 路径
-NOISE_PKL="data/nuscenes_infos_val_with_noise.pkl"      # 外参扰动 + 遮挡 mask
-DROP_PKL="data/nuscenes_infos_val_with_noise_Drop .pkl"  # 丢帧数据（注意文件名有空格）
+NOISE_PKL="data/nuscenes/nuscenes_infos_val_with_noise.pkl"      # 外参扰动 + 遮挡 mask
+DROP_PKL="data/nuscenes/nuscenes_infos_val_with_noise_Drop .pkl"  # 丢帧数据（注意文件名有空格）
 MASK_DIR="robust_benchmark/Occlusion_mask"
 
 # 基线使用的 ann_file（如果没有原始 temporal_val.pkl，则用 noise pkl 替代）
